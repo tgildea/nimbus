@@ -72,17 +72,19 @@
 @interface NIToolbarPhotoViewController : UIViewController <
   NIPhotoAlbumScrollViewDelegate,
   NIPhotoScrubberViewDelegate > {
-@private
-  // Views
-  UIToolbar*              _toolbar;
-  NIPhotoAlbumScrollView* _photoAlbumView;
+
+@protected
+  // Toolbar
+  UIToolbar*       _toolbar;
+  UIBarButtonItem* _nextButton;
+  UIBarButtonItem* _previousButton;
 
   // Scrubber View
   NIPhotoScrubberView* _photoScrubberView;
-
-  // Toolbar Buttons
-  UIBarButtonItem* _nextButton;
-  UIBarButtonItem* _previousButton;
+    
+@private
+  // View
+  NIPhotoAlbumScrollView* _photoAlbumView;
 
   // Gestures
   UITapGestureRecognizer* _tapGesture;
@@ -125,7 +127,7 @@
 
 - (void)setChromeVisibility:(BOOL)isVisible animated:(BOOL)animated;
 - (void)setChromeTitle;
-
+- (void)updateToolbarItems;
 
 @end
 
