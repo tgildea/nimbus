@@ -232,6 +232,14 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)viewWillDisappear:(BOOL)animated {
+  // Prevent the status bar from disappearing if the user tapped just prior dismissing the view
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(toggleChromeVisibility) object:nil];
+  [super viewWillDisappear:animated];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < NIIOS_6_0
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
   return NIIsSupportedOrientation(toInterfaceOrientation);
