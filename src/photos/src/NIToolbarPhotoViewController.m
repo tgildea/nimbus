@@ -312,18 +312,18 @@
   }
 
   CGRect toolbarFrame = self.toolbar.frame;
-  CGRect bounds = self.view.bounds;
+  CGRect oldBounds = self.view.bounds;
 
   if (self.toolbarIsTranslucent) {
     // Reset the toolbar's initial position.
     if (!isVisible) {
-      toolbarFrame.origin.y = bounds.size.height - toolbarFrame.size.height;
+      toolbarFrame.origin.y = oldBounds.size.height - toolbarFrame.size.height;
 
     } else {
       // Ensure that the toolbar is visible through the animation.
       self.toolbar.hidden = NO;
 
-      toolbarFrame.origin.y = bounds.size.height;
+      toolbarFrame.origin.y = oldBounds.size.height;
     }
     self.toolbar.frame = toolbarFrame;
   }
@@ -345,15 +345,17 @@
 #endif
   }
 
+  CGRect newBounds = self.view.bounds;
+
   if (self.toolbarIsTranslucent) {
     // Place the toolbar at its final location.
     if (isVisible) {
       // Slide up.
-      toolbarFrame.origin.y = bounds.size.height - toolbarFrame.size.height;
+      toolbarFrame.origin.y = newBounds.size.height - toolbarFrame.size.height;
 
     } else {
       // Slide down.
-      toolbarFrame.origin.y = bounds.size.height;
+      toolbarFrame.origin.y = newBounds.size.height;
     }
   }
 
@@ -365,8 +367,10 @@
     CGFloat statusBarHeight = MIN(statusBarFrame.size.width, statusBarFrame.size.height);
 
     if (isVisible) {
-      navigationBarFrame.origin.y = statusBarHeight;
-
+      if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending && statusBarHeight == 40.0)
+        navigationBarFrame.origin.y = statusBarHeight - 20;
+      else
+        navigationBarFrame.origin.y = statusBarHeight;
     } else {
       navigationBarFrame.origin.y = 0;
     }
@@ -590,6 +594,5 @@
     }
   }
 }
-
 
 @end
